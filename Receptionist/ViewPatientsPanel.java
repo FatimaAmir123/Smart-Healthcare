@@ -1,5 +1,4 @@
 package Receptionist;
-
 import Doctor.doctorDataStore;
 import javax.swing.*;
 import javax.swing.border.*;
