@@ -7,8 +7,7 @@ import System.HospitalSystem;
 
 public class AdminLoginScreen extends JFrame {
 
-    public static boolean transitioning = false;
-
+    public static boolean transitioning = false; 
     private JTextField usernameField;
     private JPasswordField passwordField;
 
