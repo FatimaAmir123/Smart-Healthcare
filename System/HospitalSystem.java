@@ -229,10 +229,17 @@ public class HospitalSystem {
                     String doctor = parts.length >= 4 ? parts[3] : "";
                     if (Dashboard.patient != null) {
                         boolean matched = false;
+                        String altDate = normalizeDateForMatch(date);
+                        String altDoctor = doctor.startsWith("Dr. ") ? doctor.substring(4) : "Dr. " + doctor;
                         for (Appointment a : Dashboard.patient.getAppointments()) {
                             if (a.getStatus().equals("Cancelled") || a.getStatus().equals("Rejected")) continue;
-                            if (!a.getDate().equals(date) || !a.getTimeSlot().equals(time)) continue;
-                            if (!doctor.isEmpty() && !a.getDoctorName().equals(doctor)) continue;
+                            boolean dateOk = a.getDate().equals(date)
+                                || (!altDate.isEmpty() && a.getDate().equals(altDate));
+                            boolean timeOk = a.getTimeSlot().equals(time);
+                            boolean docOk = doctor.isEmpty()
+                                || a.getDoctorName().equals(doctor)
+                                || a.getDoctorName().equals(altDoctor);
+                            if (!dateOk || !timeOk || !docOk) continue;
                             a.setStatus(newStatus);
                             String msg = "Appointment with " + a.getDoctorName() + " on " + date + " at " + time;
                             if (newStatus.equals("Scheduled")) {
@@ -270,6 +277,24 @@ public class HospitalSystem {
             }
         } catch (Exception e) {
             System.out.println("[HospitalSystem] syncDoctorStatusToPatient: " + e.getMessage());
+        }
+    }
+
+    /** Try converting between "yyyy-MM-dd" and "dd MMM yyyy" so matching works regardless of format. */
+    private static String normalizeDateForMatch(String d) {
+        if (d == null || d.isEmpty()) return "";
+        if (d.contains("-")) {
+            // yyyy-MM-dd → dd MMM yyyy
+            try {
+                return new java.text.SimpleDateFormat("dd MMM yyyy", java.util.Locale.ENGLISH)
+                    .format(new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.ENGLISH).parse(d));
+            } catch (Exception e) { return ""; }
+        } else {
+            // dd MMM yyyy → yyyy-MM-dd
+            try {
+                return new java.text.SimpleDateFormat("yyyy-MM-dd")
+                    .format(new java.text.SimpleDateFormat("dd MMM yyyy", java.util.Locale.ENGLISH).parse(d));
+            } catch (Exception e) { return ""; }
         }
     }
 
