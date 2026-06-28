@@ -11,11 +11,6 @@ public class HospitalSystem {
 
     private static final java.util.List<Appointment> allAppointments = new java.util.ArrayList<>();
 
-    /**
-     * Shared booked-slot key set: keys are "doctorName|yyyy-MM-dd|HH:mm".
-     * Written by Patient and Receptionist booking flows.
-     * Checked by both sides to prevent double-booking.
-     */
     private static final java.util.Set<String> bookedSlotKeys = new java.util.LinkedHashSet<>();
 
     public static boolean isSlotBooked(String doctor, String dateYmd, String time) {
