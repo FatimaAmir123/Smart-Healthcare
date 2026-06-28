@@ -393,6 +393,7 @@ public class PatientGUI {
       addrLbl.setBounds(rx, y, cw, lh);
       personalCard.add(addrLbl);
 
+      
       JComboBox<String> genderFld = new JComboBox<>(new String[]{"Male", "Female"});
       genderFld.setFont(new Font("Segoe UI", 0, 16));
       genderFld.setBounds(lx, y + lh + 4, cw, fh);
