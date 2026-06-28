@@ -6,7 +6,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class doctorOverviewPanel extends JPanel {
-
     // ── Colors ──────────────────────────────────────────────────────────
     private final Color BACKGROUND = new Color(245, 247, 252);
     private final Color CARD_BG    = Color.WHITE;
